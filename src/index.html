@@ -56,3 +56,43 @@
 
 <h1>Movies, Floofed</h1>
 
+<div class="movies"></div>
+
+<!-- Template is unseen html that can be used over almost like react components in a small sense. In React.js you wouldn't need a template or to clone the template in a forEach() down below. You could simply use jsx and a map() to create the nodes.-->
+<template id="movie-template">
+  <div class="movie">
+    <img src="" />
+
+    <h2></h2>
+    <p class="tagline"></p>
+
+    <h3>Viewer Ratings</h3>
+    <ul class="scores"></ul>
+  </div>
+</template>
+
+<script>
+  async function initialize() {
+    // Grabs the movies from our serverless function //
+    const movies = await fetch('/.netlify/functions/movies').then((res) => res.json())
+
+    const container = document.querySelector('.movies')
+    const template = document.querySelector('#movie-template')
+
+    movies.forEach((movie) => {
+      const el = template.content.cloneNode(true)
+
+      const img = el.querySelector('img')
+      img.src = movie.poster
+      img.alt = movie.tittle
+
+      el.querySelector('h2').innerText = movie.title
+      el.querySelector('.tagline').innerText = movie.tagline
+
+      container.appendChild(el)
+    });
+  }
+
+  initialize()
+
+</script>
